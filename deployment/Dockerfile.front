@@ -1,0 +1,12 @@
+FROM node:alpine
+LABEL authors="Bernard Widjanarko <berniex@gmail.com>"
+RUN mkdir /app
+WORKDIR /app
+ENV PATH /app/node_modules/.bin:$PATH
+COPY /front/package.json ./
+COPY /front/package-lock.json ./
+RUN npm install --silent
+RUN npm install react-scripts@3.4.1 -g --silent
+COPY /front/./ ./
+EXPOSE 3000
+CMD ["npm", "start"]
