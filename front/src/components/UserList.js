@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useToken from './../useToken';
 import Login from "./../Login";
 
 function UserList() {
     const [users, setUsers] = useState("");
     const {token, setToken} = useToken();
-    const navigate = useNavigate();
+    
     useEffect(() => {    
       getUsers();
     }, [])
@@ -26,17 +26,13 @@ function UserList() {
         }
     };
 
-    const logout = async (e) => {
-      e.preventDefault();
-      try {
-        navigate("/");
-      } catch (error) {
-        console.log(error);
-      }
+    const logout = () => {
+      localStorage.removeItem('token');
+      setToken(null);
+      return <Login setToken={setToken} />
     }
 
-    let role = localStorage.getItem('role', token.role);
-    console.log("Role >>>", role);
+    console.log("Role After >>>", token);
 
     return (
         <div className="columns mt-5">
@@ -56,9 +52,9 @@ function UserList() {
                         <th>Password</th>
                         <th>Role</th>
                         <th>Token</th>
-                        {role==='Admin' &&
+                        {token.role==='Admin' &&
                         <th>Edit</th>}
-                        {role==='Admin' &&
+                        {token.role==='Admin' &&
                         <th>Delete</th>}
                       </tr>
                     </thead>
@@ -73,7 +69,7 @@ function UserList() {
                           <td>{user.password}</td>
                           <td>{user.role}</td>
                           <td>{user.token}</td>
-                          {role==='Admin' &&
+                          {token.role==='Admin' &&
                           <td>
                             <Link
                               to={`edit/${user._id}`}
@@ -82,7 +78,7 @@ function UserList() {
                               Edit
                             </Link>
                           </td>}
-                          {role==='Admin' &&
+                          {token.role==='Admin' &&
                           <td>
                             <button
                               onClick={() => deleteUser(user._id)}
@@ -100,7 +96,7 @@ function UserList() {
                   </Link>
                 </div>
         ) : (
-            <p>Wait for users .. </p>                 
+            <p>Waiting for users .. </p>                 
         )}
         </div>
     )

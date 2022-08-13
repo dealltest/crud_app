@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import useToken from './../useToken';
 import Login from "./../Login";
 
 function EditUser() {
@@ -17,7 +16,7 @@ function EditUser() {
 
   useEffect(() => { 
     getUserById();
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const getUserById = async () => {
     const response = await axios.get(`http://localhost:8099/users/${id}`);

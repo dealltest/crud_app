@@ -25,8 +25,6 @@ async function loginUser(credentials) {
       password
     });
     console.log("Login.js Token : " + JSON.stringify(token));
-    console.log("Login.js Role : " + token.role);
-    localStorage.setItem('role', token.role);
     setToken(token);
   }
 
